@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using e_commercial_API.Errors;
 using e_commercial_Domain;
 using e_commercial_Domain.Dtos.ProductDtos;
 using e_commercial_Domain.Models;
@@ -13,9 +14,7 @@ using System.Threading.Tasks;
 
 namespace e_commercial_API.Controllers
 {
-    [Route("api/[controller]/[action]")]
-    [ApiController]
-    public class ProductController : ControllerBase
+    public class ProductController : BaseApiController
     {
 
         private readonly IGenericRepository<Product> _productRepo;
@@ -36,7 +35,7 @@ namespace e_commercial_API.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
+        [HttpGet("GetProducts")]
         public async Task<ActionResult<IReadOnlyList<ProductDto>>> GetProducts()
         {
             var spec = new ProductSpecification();
@@ -44,23 +43,28 @@ namespace e_commercial_API.Controllers
 
             return Ok(_mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductDto>>(prducts));
         }
-        [HttpGet("{id}")]
+        [HttpGet("GetProduct/{id}")]
+        // to display responses types for this end point in swagger
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        // if response type is 404 not found , response object is ApiResponse
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+
         public async Task<ActionResult<ProductDto>> GetProduct(int id)
         {
             var spec = new ProductSpecification(id);
             var product = await _productRepo.GetEntityWithSpec(spec);
             if (product == null)
             {
-                return NotFound();
+                return NotFound(new ApiResponse(404));
             }
             return _mapper.Map<Product, ProductDto>(product);
         }
-        [HttpGet]
+        [HttpGet("GetProductBrands")]
         public async Task<ActionResult<List<ProductBrand>>> GetProductBrands()
         {
             return Ok(await _productBrandRepo.AllListAsync());
         }
-        [HttpGet]
+        [HttpGet("GetProductTypes")]
         public async Task<ActionResult<List<ProductType>>> GetProductTypes()
         {
             return Ok(await _productTypeRepo.AllListAsync());

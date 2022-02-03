@@ -1,4 +1,7 @@
 
+using e_commercial_API.Errors;
+using e_commercial_API.Extensions;
+using e_commercial_API.Middleware;
 using e_commercial_Domain;
 using e_commercial_Repository.Helper;
 using e_commercial_Repository.IRepository;
@@ -32,8 +35,8 @@ namespace e_commercial_API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<IProductRepository, ProductRepository>();
-            services.AddScoped(typeof(IGenericRepository<>),typeof(GenericRepository <>));
+            //this method is extension method to IServiceCollection
+            services.AddApplicationServices();
             services.AddAutoMapper(typeof(MappingProfile));
             services.AddControllers();
             services.AddDbContext<StoreContext>(
@@ -42,10 +45,8 @@ namespace e_commercial_API
                         )
                 );
 
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "e_commercial_API", Version = "v1" });
-            });
+            services.AddSwaggerDocumentaion();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -53,14 +54,21 @@ namespace e_commercial_API
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "e_commercial_API v1"));
+                app.UseSwaggerDocumentaion();
             }
+
+            // handel exception error in development mode and production mode
+
+            app.UseMiddleware<ExceptionMiddelware>();
+
+            // handle not found response
+            app.UseStatusCodePagesWithReExecute("/error/{0}");
 
             app.UseHttpsRedirection();
 
+
             app.UseRouting();
+
             app.UseStaticFiles();
 
             app.UseAuthorization();
