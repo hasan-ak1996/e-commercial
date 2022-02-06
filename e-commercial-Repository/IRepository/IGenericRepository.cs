@@ -14,5 +14,6 @@ namespace e_commercial_Repository.IRepository
         Task<T> GetById(int id);
         Task<T> GetEntityWithSpec(ISpecification<T> spec);
         Task<IReadOnlyList<T>> GetAllWithSpec(ISpecification<T> spec);
+        Task<int> CountAsync(ISpecification<T> spec);
     }
 }

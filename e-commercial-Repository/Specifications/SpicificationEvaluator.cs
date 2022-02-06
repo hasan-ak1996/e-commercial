@@ -20,6 +20,18 @@ namespace e_commercial_Repository.Specifications
             {
                 query = query.Where(spec.Creteria);
             }
+            if(spec.OrderByAscending != null)
+            {
+                query = query.OrderBy(spec.OrderByAscending);
+            }
+            if (spec.OrderByDescending != null)
+            {
+                query = query.OrderByDescending(spec.OrderByDescending);
+            }
+            if (spec.IsPaginEnabled)
+            {
+                query = query.Skip(spec.Skip).Take(spec.Take);
+            }
             query = spec.Includs.Aggregate(query, (current, include) => current.Include(include));
 
             return query;

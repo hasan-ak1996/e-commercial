@@ -46,8 +46,18 @@ namespace e_commercial_API
                 );
 
             services.AddSwaggerDocumentaion();
-
+            // for determinate which client can conntecting with this api 
+            // set this origin on header in request that sending from client
+            services.AddCors(opt =>
+            {
+                opt.AddPolicy("CorsPolicy", policy =>
+                 {
+                     // just client with url https://localhost:4200 can connecting with this api
+                     policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200");
+                 });
+            });
         }
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -71,7 +81,10 @@ namespace e_commercial_API
 
             app.UseStaticFiles();
 
+            app.UseCors("CorsPolicy");
+
             app.UseAuthorization();
+
 
             app.UseEndpoints(endpoints =>
             {

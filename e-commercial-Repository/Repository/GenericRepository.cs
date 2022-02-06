@@ -24,9 +24,15 @@ namespace e_commercial_Repository.Repository
            return await _context.Set<T>().ToListAsync();
         }
 
+
+
         public async Task<IReadOnlyList<T>> GetAllWithSpec(ISpecification<T> spec)
         {
             return await ApplySpecification(spec).ToListAsync();
+        }
+        public async Task<int> CountAsync(ISpecification<T> spec)
+        {
+            return await ApplySpecification(spec).CountAsync();
         }
 
         public async Task<T> GetById(int id)

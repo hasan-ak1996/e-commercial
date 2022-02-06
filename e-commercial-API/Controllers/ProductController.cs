@@ -5,6 +5,7 @@ using e_commercial_Domain.Dtos.ProductDtos;
 using e_commercial_Domain.Models;
 using e_commercial_Repository.IRepository;
 using e_commercial_Repository.Specifications;
+using e_commercial_Repository.Specifications.Products;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -36,12 +37,25 @@ namespace e_commercial_API.Controllers
         }
 
         [HttpGet("GetProducts")]
-        public async Task<ActionResult<IReadOnlyList<ProductDto>>> GetProducts()
+        //add [FromQuery] attribute for parameter beacuse HttpGet hasn't body ,it well recieve properties in GetProductsInputDto object as query string from url
+        public async Task<ActionResult<Pagination<ProductDto>>> GetProducts([FromQuery] GetProductsInputDto productParams)
         {
-            var spec = new ProductSpecification();
+            var spec = new ProductSpecification(productParams);
+            var countSpec = new ProductWithFiltersForCountSpicification(productParams);
+
             var prducts = await _productRepo.GetAllWithSpec(spec);
 
-            return Ok(_mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductDto>>(prducts));
+            var totalCount = await _productRepo.CountAsync(countSpec);
+
+            var data = _mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductDto>>(prducts);
+
+            return Ok(new Pagination<ProductDto>
+            (
+                productParams.PageIndex,
+                productParams.PageSize,
+                totalCount,
+                data
+            ));
         }
         [HttpGet("GetProduct/{id}")]
         // to display responses types for this end point in swagger
