@@ -1,0 +1,26 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "2c9176a1-a85c-4dc4-a757-1ee1dd85c8a6": {
+      "ProjectGuid": "2c9176a1-a85c-4dc4-a757-1ee1dd85c8a6",
+      "DisplayName": "e-commercial-API",
+      "ColorIndex": 0
+    },
+    "059e8cf2-92fe-45bb-9fa0-b3c337936106": {
+      "ProjectGuid": "059e8cf2-92fe-45bb-9fa0-b3c337936106",
+      "DisplayName": "e-commercial-Domain",
+      "ColorIndex": 1
+    },
+    "bb687c51-0561-436a-b475-7e64da8244c2": {
+      "ProjectGuid": "bb687c51-0561-436a-b475-7e64da8244c2",
+      "DisplayName": "e-commercial-Repository",
+      "ColorIndex": 2
+    },
+    "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3": {
+      "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
+      "DisplayName": "Miscellaneous Files",
+      "ColorIndex": -1
+    }
+  },
+  "NextColorIndex": 3
+}

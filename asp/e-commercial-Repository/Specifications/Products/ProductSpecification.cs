@@ -7,7 +7,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace e_commercial_Repository.Specifications
+namespace e_commercial_Repository.Specifications.Products
 {
     public class ProductSpecification : BaseSpecification<Product>
     {

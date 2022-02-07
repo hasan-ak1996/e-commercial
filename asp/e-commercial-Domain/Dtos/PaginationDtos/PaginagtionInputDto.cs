@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace e_commercial_Domain.Dtos.ProductDtos
+namespace e_commercial_Domain.Dtos.PaginationDtos
 {
-    public class GetProductsInputDto
+    public class PaginagtionInputDto
     {
-        // max amount of items for one page
+        // max amount of items for one page is 50 items
         private const int MaxPageSize = 50;
         // page number, default is a first page
         public int PageIndex { get; set; } = 1;
@@ -22,17 +22,5 @@ namespace e_commercial_Domain.Dtos.ProductDtos
         }
         // property for sorting
         public string Sort { get; set; }
-        // properties for filtering
-        public int? BrandId { get; set; }
-        public int? TypeId { get; set; }
-        private string _search;
-        public string Search { 
-            get => _search;
-            set => _search = value.ToLower(); 
-        }
-
-
-
-
     }
 }
